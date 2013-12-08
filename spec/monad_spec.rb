@@ -169,4 +169,39 @@ describe Monad::Failable do
       end
     end
   end
+
+  example 'handling divide by zero gracefully' do
+    # given
+    def fdiv(a, b)
+      if b == 0
+        Monad.failure("divide by zero")
+      else
+        Monad.success(a / b)
+      end
+    end
+
+    def fdiv_with_binding(first_divisor)
+      fdiv(2.0, first_divisor).bindb do |val1|
+        fdiv(3.0, 1.0).bindb do |val2|
+          fdiv(val1, val2).bindb do |val3|
+            Monad.success(val3)
+          end
+        end
+      end
+    end
+
+    # when
+    result = fdiv_with_binding(1.0)
+
+    # then
+    expect(result.success?).to be_true
+    expect(result.value).to eq(2.0 / 3.0)
+
+    # when
+    result = fdiv_with_binding(0.0)
+
+    # then
+    expect(result.success?).to be_false
+    expect(result.value).to eq("divide by zero")
+  end
 end
