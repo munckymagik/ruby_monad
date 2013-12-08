@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Monad::VERSION
   spec.authors       = ["Dan Munckton"]
   spec.email         = ["dangit@munckfish.net"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{Using http://www.valuedlessons.com/2008/01/monads-in-ruby-with-nice-syntax.html as a starting point. Implement the examples in that article, using rspec tests.}
+  spec.summary       = %q{An experiment implementing monads in Ruby}
   spec.homepage      = ""
   spec.license       = "MIT"
 

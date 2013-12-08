@@ -1,6 +1,12 @@
 # Monad
 
-TODO: Write a gem description
+Experiment with implementation of the monad functional design pattern in Ruby
+using http://www.valuedlessons.com/2008/01/monads-in-ruby-with-nice-syntax.html as
+a starting point.
+
+Not intended as a serious gem (at the moment at least).
+
+BOILERPLATE FROM HERE ONWARDS:
 
 ## Installation
 
