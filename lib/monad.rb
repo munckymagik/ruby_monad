@@ -31,6 +31,18 @@ module Monad
         self
       end
     end
+
+    def self.unit(val)
+      self.new(val, true)
+    end
+
+    def to_s
+      if @is_success
+        "Success(#{@value})"
+      else
+        "Failure(#{@value})"
+      end
+    end
   end
 
   def self.success(value)

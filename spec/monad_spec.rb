@@ -129,4 +129,44 @@ describe Monad::Failable do
       end
     end
   end
+
+  describe '#self.unit' do
+    it 'always returns a Failable representing success' do
+      # given
+
+      # when
+      result = Monad::Failable.unit(123)
+
+      # then
+      expect(result.success?).to be_true
+      expect(result.value).to eq(123)
+    end
+  end
+
+  describe '#to_s' do
+    context 'when the instance is a success' do
+      it 'returns a string indicating success' do
+        # given
+        success = described_class.new 123, true
+
+        # when
+        result = success.to_s
+
+        # then
+        expect(result).to eq("Success(123)")
+      end
+    end
+    context 'when the instance is a failure' do
+      it 'returns a string indicating failure' do
+        # given
+        success = described_class.new 123, false
+
+        # when
+        result = success.to_s
+
+        # then
+        expect(result).to eq("Failure(123)")
+      end
+    end
+  end
 end
