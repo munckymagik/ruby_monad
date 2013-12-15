@@ -1,7 +1,7 @@
 require 'monad'
 
 shared_examples "not implemented" do |obj, described_method, args|
-  it "raises a not implemented exepection when called" do
+  it "raises a not implemented exception when called" do
     expect {
       obj.send(described_method, *args)
     }.to raise_error("not implemented")
