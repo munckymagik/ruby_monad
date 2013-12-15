@@ -129,33 +129,34 @@ describe Failable do
     end
   end
 
-  example 'handling divide by zero gracefully' do
-    # given
-    def fdiv(a, b)
-      if b == 0
-        Failable.failure("divide by zero")
-      else
-        Failable.success(a / b)
-      end
+  def fdiv(a, b)
+    if b == 0
+      Failable.failure("divide by zero")
+    else
+      Failable.success(a / b)
     end
+  end
 
-    def fdiv_with_binding(first_divisor)
-      fdiv(2.0, first_divisor).bindb do |val1|
-        fdiv(3.0, 1.0).bindb do |val2|
-          fdiv(val1, val2).bindb do |val3|
-            Failable.success(val3)
-          end
+  def fdiv_with_binding(first_divisor)
+    fdiv(2.0, first_divisor).bindb do |val1|
+      fdiv(3.0, 1.0).bindb do |val2|
+        fdiv(val1, val2).bindb do |val3|
+          Failable.success(val3)
         end
       end
     end
+  end
 
+  example 'fdiv returns the quotient of dividing one floating point number by another' do
     # when
     result = fdiv_with_binding(1.0)
 
     # then
     expect(result.success?).to be_true
     expect(result.value).to eq(2.0 / 3.0)
+  end
 
+  example 'fdiv handles divide by zero gracefully by using Failable' do
     # when
     result = fdiv_with_binding(0.0)
 
