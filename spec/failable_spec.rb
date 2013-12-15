@@ -1,27 +1,6 @@
 require 'monad'
 
 describe Monad do
-  describe '#success' do
-    it 'constructs a Failable representing success' do
-      # when
-      result = Monad.success(1234)
-
-      # then
-      expect(result.success?).to be_true
-      expect(result.value).to eq(1234)
-    end
-  end
-
-  describe '#failure' do
-    it 'constructs a Failable representing failure' do
-      # when
-      result = Monad.failure(1234)
-
-      # then
-      expect(result.success?).to be_false
-      expect(result.value).to eq(1234)
-    end
-  end
 end
 
 describe Monad::Failable do
@@ -43,6 +22,28 @@ describe Monad::Failable do
         failure = described_class.new 1, false
         expect(failure.success?).to be_false
       end
+    end
+  end
+
+  describe '#self.success' do
+    it 'constructs a Failable representing success' do
+      # when
+      result = Monad::Failable.success(1234)
+
+      # then
+      expect(result.success?).to be_true
+      expect(result.value).to eq(1234)
+    end
+  end
+
+  describe '#self.failure' do
+    it 'constructs a Failable representing failure' do
+      # when
+      result = Monad::Failable.failure(1234)
+
+      # then
+      expect(result.success?).to be_false
+      expect(result.value).to eq(1234)
     end
   end
 
@@ -133,9 +134,9 @@ describe Monad::Failable do
     # given
     def fdiv(a, b)
       if b == 0
-        Monad.failure("divide by zero")
+        Monad::Failable.failure("divide by zero")
       else
-        Monad.success(a / b)
+        Monad::Failable.success(a / b)
       end
     end
 
@@ -143,7 +144,7 @@ describe Monad::Failable do
       fdiv(2.0, first_divisor).bindb do |val1|
         fdiv(3.0, 1.0).bindb do |val2|
           fdiv(val1, val2).bindb do |val3|
-            Monad.success(val3)
+            Monad::Failable.success(val3)
           end
         end
       end

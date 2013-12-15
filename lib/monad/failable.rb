@@ -8,6 +8,14 @@ module Monad
       @is_success = is_success
     end
 
+    def self.success(value)
+      Failable.new value, true
+    end
+
+    def self.failure(value)
+      Failable.new value, false
+    end
+
     def bind(bindee)
       if @is_success
         bindee.call(@value)
@@ -27,13 +35,5 @@ module Monad
         "Failure(#{@value})"
       end
     end
-  end
-
-  def self.success(value)
-    Failable.new value, true
-  end
-
-  def self.failure(value)
-    Failable.new value, false
   end
 end
