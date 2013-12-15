@@ -1,9 +1,8 @@
 require 'monad'
 
-describe Monad do
-end
+include Monad
 
-describe Monad::Failable do
+describe Failable do
   describe '#initialize' do
     it 'takes an arbitrary value as a first parameter' do
       instance = described_class.new 1, false
@@ -28,7 +27,7 @@ describe Monad::Failable do
   describe '#self.success' do
     it 'constructs a Failable representing success' do
       # when
-      result = Monad::Failable.success(1234)
+      result = Failable.success(1234)
 
       # then
       expect(result.success?).to be_true
@@ -39,7 +38,7 @@ describe Monad::Failable do
   describe '#self.failure' do
     it 'constructs a Failable representing failure' do
       # when
-      result = Monad::Failable.failure(1234)
+      result = Failable.failure(1234)
 
       # then
       expect(result.success?).to be_false
@@ -95,7 +94,7 @@ describe Monad::Failable do
       # given
 
       # when
-      result = Monad::Failable.unit(123)
+      result = Failable.unit(123)
 
       # then
       expect(result.success?).to be_true
@@ -134,9 +133,9 @@ describe Monad::Failable do
     # given
     def fdiv(a, b)
       if b == 0
-        Monad::Failable.failure("divide by zero")
+        Failable.failure("divide by zero")
       else
-        Monad::Failable.success(a / b)
+        Failable.success(a / b)
       end
     end
 
@@ -144,7 +143,7 @@ describe Monad::Failable do
       fdiv(2.0, first_divisor).bindb do |val1|
         fdiv(3.0, 1.0).bindb do |val2|
           fdiv(val1, val2).bindb do |val3|
-            Monad::Failable.success(val3)
+            Failable.success(val3)
           end
         end
       end
