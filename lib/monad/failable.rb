@@ -1,39 +1,49 @@
 module Monad
   class Failable < Monad
-    attr_reader :value, :is_success
-    alias :success? :is_success
+    attr_reader :value
 
-    def initialize(value, is_success)
+    def initialize(value)
       @value = value
-      @is_success = is_success
     end
 
     def self.success(value)
-      Failable.new value, true
+      Success.new value
     end
 
     def self.failure(value)
-      Failable.new value, false
-    end
-
-    def bind(bindee)
-      if @is_success
-        bindee.call(@value)
-      else
-        self
-      end
+      Failure.new value
     end
 
     def self.unit(val)
-      self.new(val, true)
+      self.success(val)
+    end
+  end
+
+  class Success < Failable
+    def success?
+      true
+    end
+
+    def bind(bindee)
+      bindee.call(@value)
     end
 
     def to_s
-      if @is_success
-        "Success(#{@value})"
-      else
-        "Failure(#{@value})"
-      end
+      "Success(#{@value})"
+    end
+  end
+
+  class Failure < Failable
+    def success?
+      false
+    end
+
+    def bind(bindee)
+      self
+    end
+
+    def to_s
+      "Failure(#{@value})"
     end
   end
 end
